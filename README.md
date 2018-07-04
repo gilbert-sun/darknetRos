@@ -51,7 +51,7 @@ $ git clone --recursive https://github.com/leggedrobotics/darknet_ros.git
 ```
 
 
-```bash
+```
 $ cd ../ (==> ~/catkin_ws/src/darknet_ros/darknet_ros/)
 $ patch -p6 < ../../darknetRos/e2.patch
 
