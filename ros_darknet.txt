@@ -1,0 +1,15 @@
+roslaunch darknet_ros actionYolo_ros.launch
+roslaunch usb_cam usb_cam-test.launch
+source /root/catkin_ws/devel/setup.bash
+roscore
+
+
+root@tegra-ubuntu:~/catkin_ws/src/darknet_ros/darknet_ros# patch -p6 < ../../e2.patch 
+patching file config/ros.yaml
+patching file config/yolo-action.yaml
+patching file launch/actionYolo_ros.launch
+patching file yolo_network_config/cfg/yolo-action.cfg
+
+## . == ~/catkin_ws/src/darknet_ros/darknet_ros
+cp file yolo_network_config/weights/yolo-action_final.weights . 
+
