@@ -1,5 +1,6 @@
 
 # Falling detection at Darknet ROS Nvidia Tx2
+## *Use your own detection objects
 Deep learning framework I tried moving object recognition by YOLO (You only look once) feature quantity of darknet, connecting ROS wrapper package "darknet_ros" with WEB camera.
 darknet_ros "was created by Robotic Systems Lab of ETH Zurich (Zurich Technical University).
 
@@ -27,7 +28,7 @@ $ bounding_boxes:
 ---​
 ```
 
-Installation of Falling detection....
+# Use your own Yolov3_ROS detection objects....
 =====================================
 
 - Install TensorFlow (see [tensor flow install guide](https://www.tensorflow.org/install/install_linux))
@@ -48,6 +49,9 @@ $ sudo apt-get install python-catkin-tools`
 $ mkdir -p ~/catkin_darknet/src
 $ cd ~/catkin_ws/src
 $ git clone --recursive https://github.com/leggedrobotics/darknet_ros.git
+$ darknet_ros/darknet_ros/patch -p6 < e2.patch
+$ catkin_make -- pkg darknet_ros -DCMAKE_BUILD_TYPE=Release
+$ roslaunch darknet_ros actionYolo_ros.launch
 ```
 
 # Patching modification file
@@ -234,7 +238,11 @@ $ rostopic echo  /darknet_ros/detection_image
 ~~Ref~~
 =======
 
+[![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/darknet_ros/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/darknet_ros/job/master/)
+
 1):  usb_cam: https://github.com/szebedy/usb_cam.git
+
 2):  usb_cam: https://github.com/ros-drives/usb_cam
 
+3):  darknet_ros: https://github.com/ayushgaud/darknet_ros
 ***
