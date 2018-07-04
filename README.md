@@ -1,6 +1,6 @@
 
 
-# Falling detection at [Darknet ROS Wrapper] at Nvidia Tx2
+# Falling detection at [Darknet ROS Wrapper] on Nvidia Tx2
 ***
 
 [![Build Status](https://ci.leggedrobotics.com/buildStatus/icon?job=github_leggedrobotics/darknet_ros/master)](https://ci.leggedrobotics.com/job/github_leggedrobotics/job/darknet_ros/job/master/)
