@@ -125,7 +125,7 @@ $ rostopic echo  /darknet_ros/detection_image
 
 # ROS + Darknet
 ----------------
-![Darknet & ROS ](./data/6.png)
+![Darknet & ROS ](./data/6.jpeg)
 
 # RQT
 ----------------
