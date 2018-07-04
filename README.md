@@ -7,6 +7,7 @@
 
 ![Darknet Logo](http://pjreddie.com/media/files/darknet-black-small.png)
 
+**Author** Yuan-Heng (Gilbert) Sun
 ***
 ## *Use your own detection objects
 Deep learning framework I tried moving object recognition by YOLO (You only look once) feature quantity of darknet, connecting ROS wrapper package "darknet_ros" with WEB camera.
