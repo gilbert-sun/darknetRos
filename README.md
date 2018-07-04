@@ -50,7 +50,7 @@ $ cd ~/catkin_ws/src
 $ git clone --recursive https://github.com/leggedrobotics/darknet_ros.git
 ```
 
-# Patching modify file
+# Patching modification file
 Now you can use the catkin build command.
 ```
 $ cd ~/catkin_ws/src/darknet_ros/darknet_ros/
@@ -70,6 +70,88 @@ $ ...result
 
 $ cd ../ (==> ~/catkin_ws)
 $ catkin build darknet_ros /(or) catkin_make
+```
+- /catkin_ws/src/darknet_ros/darknet_ros/config/yolo-action.yaml
+```
+yolo_model:
+
+  config_file:
+    name: yolo-action.cfg
+  weight_file:
+    name: yolo-action_final.weights
+  threshold:
+    value: 0.3
+  detection_classes:
+    names:
+      - standing
+      - sitting
+      - falling
+```
+
+- /catkin_ws/src/darknet_ros/darknet_ros/config/ros.yaml
+```
+subscribers:
+
+  camera_reading:
+    topic: /usb_cam/image_raw
+#/image_raw
+#/usb_cam/image_raw
+#/camera/rgb/image_raw
+    queue_size: 1
+
+actions:
+
+  camera_reading:
+    name: /darknet_ros/check_for_objects
+
+publishers:
+
+  object_detector:
+    topic: /darknet_ros/found_object
+    queue_size: 1
+    latch: false
+
+  bounding_boxes:
+    topic: /darknet_ros/bounding_boxes
+    queue_size: 1
+    latch: false
+
+  detection_image:
+    topic: /darknet_ros/detection_image
+    queue_size: 1
+    latch: true
+
+image_view:
+
+  enable_opencv: true
+  wait_key_delay: 1
+  enable_console_output: true
+```
+
+- /catkin_ws/src/darknet_ros/darknet_ros/launch/actionYolo_ros.launch
+```
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+  <!-- Console launch prefix -->
+  <arg name="launch_prefix" default=""/>
+
+  <!-- Config and weights folder. -->
+  <arg name="yolo_weights_path"          default="$(find darknet_ros)/yolo_network_config/weights"/>
+  <arg name="yolo_config_path"           default="$(find darknet_ros)/yolo_network_config/cfg"/>
+
+  <!-- Load parameters -->
+  <rosparam command="load" ns="darknet_ros" file="$(find darknet_ros)/config/ros.yaml"/>
+  <rosparam command="load" ns="darknet_ros" file="$(find darknet_ros)/config/yolo-action.yaml"/>
+
+  <!-- Start darknet and ros wrapper -->
+  <node pkg="darknet_ros" type="darknet_ros" name="darknet_ros" output="screen" launch-prefix="$(arg launch_prefix)">
+    <param name="weights_path"          value="$(arg yolo_weights_path)" />
+    <param name="config_path"           value="$(arg yolo_config_path)" />
+  </node>
+
+ <!--<node name="republish" type="republish" pkg="image_transport" output="screen" 	args="compressed in:=/front_camera/image_raw raw out:=/camera/image_raw" /> -->
+</launch>
 ```
 
 
