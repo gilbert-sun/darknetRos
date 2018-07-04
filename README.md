@@ -233,4 +233,8 @@ $ rostopic echo  /darknet_ros/detection_image
 
 ~~Ref~~
 =======
+
+1):  usb_cam: https://github.com/szebedy/usb_cam.git
+2):  usb_cam: https://github.com/ros-drives/usb_cam
+
 ***
