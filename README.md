@@ -53,7 +53,7 @@ $ git clone --recursive https://github.com/leggedrobotics/darknet_ros.git
 # Patching modify file
 Now you can use the catkin build command.
 ```
-$ cd ../ (==> ~/catkin_ws/src/darknet_ros/darknet_ros/)
+$ cd ~/catkin_ws/src/darknet_ros/darknet_ros/
 
 $ patch -p6 < ../../darknetRos/e2.patch
 $ ...result
