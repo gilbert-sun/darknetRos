@@ -50,10 +50,23 @@ $ cd ~/catkin_ws/src
 $ git clone --recursive https://github.com/leggedrobotics/darknet_ros.git
 ```
 
-
+# Patching modify file
+Now you can use the catkin build command.
 ```
 $ cd ../ (==> ~/catkin_ws/src/darknet_ros/darknet_ros/)
+
 $ patch -p6 < ../../darknetRos/e2.patch
+$ ...result
+1.)patching file config/ros.yaml
+2.)patching file config/yolo-action.yaml
+3.)patching file launch/actionYolo_ros.launch
+4.)patching file yolo_network_config/cfg/yolo-action.cfg
+
+## . == ~/catkin_ws/src/darknet_ros/darknet_ros
+$cp file yolo_network_config/weights/yolo-action_final.weights .
+
+$ ...result
+5).yolo_network_config/weights/yolo-action_final.weights
 
 $ cd ../ (==> ~/catkin_ws)
 $ catkin build darknet_ros /(or) catkin_make
@@ -132,7 +145,7 @@ $ rostopic echo  /darknet_ros/detection_image
 ![Total Ros Structure](./data/5.png)
 
 
-#Rostopic
+# Rostopic
 ----------------
 ![Msg return Demo](./data/3.png)
 
