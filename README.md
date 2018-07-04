@@ -9,7 +9,7 @@
 
 **Author** Yuan-Heng (Gilbert) Sun
 ***
-## *Use your own detection objects
+# Darknet ROS Wrapper to use your own detection objects
 Deep learning framework I tried moving object recognition by YOLO (You only look once) feature quantity of darknet, connecting ROS wrapper package "darknet_ros" with WEB camera.
 darknet_ros "was created by Robotic Systems Lab of ETH Zurich (Zurich Technical University).
 
@@ -37,7 +37,7 @@ $ bounding_boxes:
 ---​
 ```
 
-# Use your own Yolov3_ROS detection objects....
+# Using your own Darknet ROS introduction....
 =====================================
 
 - Install TensorFlow (see [tensor flow install guide](https://www.tensorflow.org/install/install_linux))
