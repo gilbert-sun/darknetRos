@@ -1,0 +1,344 @@
+Only in darknet_ros/darknet_ros: CHANGELOG.rst
+Only in darknet_ros/darknet_ros: CMakeLists.txt
+diff -ur darknet_ros/darknet_ros/config/ros.yaml /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/config/ros.yaml
+--- darknet_ros/darknet_ros/config/ros.yaml	2018-07-03 17:08:45.685214101 +0000
++++ /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/config/ros.yaml	2018-07-03 09:15:26.335008200 +0000
+@@ -1,7 +1,10 @@
+ subscribers:
+ 
+   camera_reading:
+-    topic: /camera/rgb/image_raw
++    topic: /usb_cam/image_raw
++#/image_raw
++#/usb_cam/image_raw
++#/camera/rgb/image_raw
+     queue_size: 1
+ 
+ actions:
+diff -ur darknet_ros/darknet_ros/config/yolo-action.yaml /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/config/yolo-action.yaml
+--- darknet_ros/darknet_ros/config/yolo-action.yaml	2018-07-03 17:08:45.685214101 +0000
++++ /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/config/yolo-action.yaml	2018-07-03 09:15:26.331006600 +0000
+@@ -0,0 +1,13 @@
++yolo_model:
++
++  config_file:
++    name: yolo-action.cfg
++  weight_file:
++    name: yolo-action_final.weights
++  threshold:
++    value: 0.3
++  detection_classes:
++    names:
++      - standing
++      - sitting
++      - falling
+Only in darknet_ros/darknet_ros/config: yolov2-tiny-voc.yaml
+Only in darknet_ros/darknet_ros/config: yolov2-tiny.yaml
+Only in darknet_ros/darknet_ros/config: yolov2-voc.yaml
+Only in darknet_ros/darknet_ros/config: yolov2.yaml
+Only in darknet_ros/darknet_ros/config: yolov3-voc.yaml
+Only in darknet_ros/darknet_ros/config: yolov3.yaml
+Only in darknet_ros/darknet_ros: doc
+Only in darknet_ros/darknet_ros: include
+diff -ur darknet_ros/darknet_ros/launch/actionYolo_ros.launch /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/launch/actionYolo_ros.launch
+--- darknet_ros/darknet_ros/launch/actionYolo_ros.launch	2018-07-03 17:08:45.689213594 +0000
++++ /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/launch/actionYolo_ros.launch	2018-07-03 09:15:26.335008200 +0000
+@@ -0,0 +1,22 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<launch>
++  <!-- Console launch prefix -->
++  <arg name="launch_prefix" default=""/>
++
++  <!-- Config and weights folder. -->
++  <arg name="yolo_weights_path"          default="$(find darknet_ros)/yolo_network_config/weights"/>
++  <arg name="yolo_config_path"           default="$(find darknet_ros)/yolo_network_config/cfg"/>
++
++  <!-- Load parameters -->
++  <rosparam command="load" ns="darknet_ros" file="$(find darknet_ros)/config/ros.yaml"/>
++  <rosparam command="load" ns="darknet_ros" file="$(find darknet_ros)/config/yolo-action.yaml"/>
++
++  <!-- Start darknet and ros wrapper -->
++  <node pkg="darknet_ros" type="darknet_ros" name="darknet_ros" output="screen" launch-prefix="$(arg launch_prefix)">
++    <param name="weights_path"          value="$(arg yolo_weights_path)" />
++    <param name="config_path"           value="$(arg yolo_config_path)" />
++  </node>
++
++ <!--<node name="republish" type="republish" pkg="image_transport" output="screen" 	args="compressed in:=/front_camera/image_raw raw out:=/camera/image_raw" /> -->
++</launch>
+Only in darknet_ros/darknet_ros/launch: darknet_ros_gdb.launch
+Only in darknet_ros/darknet_ros/launch: darknet_ros.launch
+Only in darknet_ros/darknet_ros/launch: yolo_v3.launch
+Only in darknet_ros/darknet_ros: package.xml
+Only in darknet_ros/darknet_ros: src
+Only in darknet_ros/darknet_ros: test
+diff -ur darknet_ros/darknet_ros/yolo_network_config/cfg/yolo-action.cfg /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/yolo_network_config/cfg/yolo-action.cfg
+--- darknet_ros/darknet_ros/yolo_network_config/cfg/yolo-action.cfg	2018-07-03 17:08:45.689213594 +0000
++++ /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/yolo_network_config/cfg/yolo-action.cfg	2018-07-03 09:15:26.335008200 +0000
+@@ -0,0 +1,258 @@
++[net]
++# Testing
++# batch=1
++# subdivisions=1
++# Training
++batch=64
++subdivisions=8
++height=416
++width=416
++channels=3
++momentum=0.9
++decay=0.0005
++angle=0
++saturation = 1.5
++exposure = 1.5
++hue=.1
++
++learning_rate=0.001
++burn_in=1000
++max_batches = 80200
++policy=steps
++steps=40000,60000
++scales=.1,.1
++
++[convolutional]
++batch_normalize=1
++filters=32
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[maxpool]
++size=2
++stride=2
++
++[convolutional]
++batch_normalize=1
++filters=64
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[maxpool]
++size=2
++stride=2
++
++[convolutional]
++batch_normalize=1
++filters=128
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=64
++size=1
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=128
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[maxpool]
++size=2
++stride=2
++
++[convolutional]
++batch_normalize=1
++filters=256
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=128
++size=1
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=256
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[maxpool]
++size=2
++stride=2
++
++[convolutional]
++batch_normalize=1
++filters=512
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=256
++size=1
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=512
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=256
++size=1
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=512
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[maxpool]
++size=2
++stride=2
++
++[convolutional]
++batch_normalize=1
++filters=1024
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=512
++size=1
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=1024
++size=3
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=512
++size=1
++stride=1
++pad=1
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++filters=1024
++size=3
++stride=1
++pad=1
++activation=leaky
++
++
++#######
++
++[convolutional]
++batch_normalize=1
++size=3
++stride=1
++pad=1
++filters=1024
++activation=leaky
++
++[convolutional]
++batch_normalize=1
++size=3
++stride=1
++pad=1
++filters=1024
++activation=leaky
++
++[route]
++layers=-9
++
++[convolutional]
++batch_normalize=1
++size=1
++stride=1
++pad=1
++filters=64
++activation=leaky
++
++[reorg]
++stride=2
++
++[route]
++layers=-1,-4
++
++[convolutional]
++batch_normalize=1
++size=3
++stride=1
++pad=1
++filters=1024
++activation=leaky
++
++[convolutional]
++size=1
++stride=1
++pad=1
++filters=40
++activation=linear
++
++
++[region]
++anchors =  1.3221, 1.73145, 3.19275, 4.00944, 5.05587, 8.09892, 9.47112, 4.84053, 11.2364, 10.0071
++bias_match=1
++classes=3
++coords=4
++num=5
++softmax=1
++jitter=.3
++rescore=1
++
++object_scale=5
++noobject_scale=1
++class_scale=1
++coord_scale=1
++
++absolute=1
++thresh = .6
++random=1
+Only in darknet_ros/darknet_ros/yolo_network_config/cfg: yolov2.cfg
+Only in darknet_ros/darknet_ros/yolo_network_config/cfg: yolov2-tiny.cfg
+Only in darknet_ros/darknet_ros/yolo_network_config/cfg: yolov2-tiny-voc.cfg
+Only in darknet_ros/darknet_ros/yolo_network_config/cfg: yolov2-voc.cfg
+Only in darknet_ros/darknet_ros/yolo_network_config/cfg: yolov3.cfg
+Only in darknet_ros/darknet_ros/yolo_network_config/cfg: yolov3-voc.cfg
+Only in darknet_ros/darknet_ros/yolo_network_config/weights: how_to_download_weights.txt
+Binary files darknet_ros/darknet_ros/yolo_network_config/weights/yolo-action_final.weights and /media/nvidia/OS_Install/darknet_ros_ok_20180705_2/darknet_ros/yolo_network_config/weights/yolo-action_final.weights differ

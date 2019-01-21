@@ -68,6 +68,7 @@ Now you can use the catkin build command.
 ```
 $ cd ~/catkin_ws/src/darknet_ros/darknet_ros/
 
+
 $ patch -p6 < ../../darknetRos/e2.patch
 $ ...result
 1.)patching file config/ros.yaml
